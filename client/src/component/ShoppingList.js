@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {Container, ListGroup, ListGroupItem, Button} from 'reactstrap';
+import {Container, ListGroup, Button, Card, CardBody, CardHeader, CardText} from 'reactstrap';
 import { CSSTransition, TransitionGroup} from'react-transition-group'
 import {connect} from 'react-redux'; 
 import {getItems, addItems, deleteItems} from '../actions/ItemActions';
@@ -15,7 +15,8 @@ class ShoppingList extends Component {
   static propTypes = {
     getItems: PropTypes.func.isRequired,
     item: PropTypes.object.isRequired,
-    isAuth: PropTypes.bool
+    isAuth: PropTypes.bool,
+    auth: PropTypes.object.isRequired
   }
 
   onDeleteClick = (id) => {
@@ -24,22 +25,28 @@ class ShoppingList extends Component {
 
   render() {
     const { items } = this.props.item;
+    const { user } = this.props.auth;
+    
     return (
       <Container>
         
            <ListGroup>
              <TransitionGroup className="shopping-list">
-                {items.map(({ _id, name }) => (
+                {items.map(({ _id, name, title }) => (
                   <CSSTransition key={_id} timeout={500} classNames="fade">
-                    <ListGroupItem>
-                      {this.props.isAuth ? <Button 
+                    <Card className="change"style={{marginTop: "10px"}}>
+                      <CardBody>
+                        <CardHeader>From: <strong>{title}</strong></CardHeader>
+                        <br></br>
+                        <CardText>Message: {name}</CardText>
+                        {this.props.isAuth ? <Button 
                         className="remove-btn"
                         color="danger"
                         size="sm"
                         onClick={this.onDeleteClick.bind(this, _id)}
-                      >&times;</Button> : null}
-                      {name}
-                    </ListGroupItem>
+                      >Delete</Button> : null}
+                      </CardBody>
+                    </Card>
                   </CSSTransition>
                 ))}
              </TransitionGroup>
@@ -53,6 +60,7 @@ class ShoppingList extends Component {
 
 const mapStateToProps = (state) => ({
   item: state.item,
+  auth: state.auth,
   isAuth: state.auth.isAuth
 })
 export default connect(

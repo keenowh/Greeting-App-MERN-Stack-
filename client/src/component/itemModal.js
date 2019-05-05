@@ -16,11 +16,14 @@ import PropTypes from 'prop-types'
 class ItemModal extends Component {
   state = {
     modal: false,
-    name: ''
+    title: '',
+    name: '',
+    
    }
 
    static propTypes = {
-     isAuth: PropTypes.bool
+     isAuth: PropTypes.bool,
+     auth: PropTypes.object.isRequired
    }
 
   toggle = () => {this.setState({
@@ -34,8 +37,10 @@ onChange = (e) =>{
 
 onSubmit = (e) => {
   e.preventDefault();
+  const { user } = this.props.auth;
   const newItem = {
-    name: this.state.name
+    name: this.state.name,
+    title: user.name
   }
 
   //Add item via addItem
@@ -44,6 +49,7 @@ onSubmit = (e) => {
   this.toggle();
 }
   render() {
+    
     return (
       <div>
         { this.props.isAuth ? 
@@ -52,7 +58,7 @@ onSubmit = (e) => {
           color="dark"
           style={{marginBottom: '2rem'}}
           onClick={this.toggle}
-        >Add Item</Button> : <h4 className="mb-3 ml-4">Please login to manage items</h4>}
+        >Add Item</Button> : <h4 className="mb-3 ml-4">Please login to send birthday messages</h4>}
 
         <Modal
         isOpen={this.state.modal}
@@ -61,12 +67,19 @@ onSubmit = (e) => {
         <ModalBody>
           <Form onSubmit={this.onSubmit}>
             <FormGroup>
-              <Label for="item">Item</Label>
-              <Input 
+              {/* <Input 
                 type="text"
+                name="title"
+                id="item"
+                placeholder="Enter your name"
+                onChange={this.onChange}
+              /> */}
+              <Label for="item">Message</Label>
+              <Input 
+                type="textarea"
                 name="name"
                 id="item"
-                placeholder="Add Shopping Item"
+                placeholder="Add your message"
                 onChange={this.onChange}
               />
               <Button
@@ -84,6 +97,7 @@ onSubmit = (e) => {
 }
 const mapStateToProps = state => ({
   item: state.item,
+  auth: state.auth,
   isAuth: state.auth.isAuth
 })
 

@@ -20,7 +20,8 @@ router.get('/', (req, res) => {
 
 router.post('/', auth ,(req, res) => {
     const newItem = new Item({
-      name: req.body.name
+      name: req.body.name,
+      title: req.body.title
     });
 
     newItem.save().then(item => res.json(item));
