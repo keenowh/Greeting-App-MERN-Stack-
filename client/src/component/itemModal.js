@@ -58,12 +58,12 @@ onSubmit = (e) => {
           color="dark"
           style={{marginBottom: '2rem'}}
           onClick={this.toggle}
-        >Add Item</Button> : <h4 className="mb-3 ml-4">Please login to send birthday messages</h4>}
+        >Add Message</Button> : <h4 className="mb-3 ml-4">Please login to send birthday messages</h4>}
 
         <Modal
         isOpen={this.state.modal}
         toggle={this.toggle}>
-        <ModalHeader toggle={this.toggle}>Add to Shopping List</ModalHeader>
+        <ModalHeader toggle={this.toggle}>Add your message</ModalHeader>
         <ModalBody>
           <Form onSubmit={this.onSubmit}>
             <FormGroup>
